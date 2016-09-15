@@ -1,0 +1,13 @@
+steps:
+  - name: Build
+    command: docker build -t js-ipfs:$BUILDKITE_COMMIT .
+
+  - wait
+
+  - name: Test
+    command: docker run -it js-ipfs:$BUILDKITE_COMMIT --entrypoint=npm test
+
+  - wait
+
+  - name: Push
+    command: echo "Eh, pushing I guess?"
