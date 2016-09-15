@@ -1,14 +1,14 @@
 steps:
   - name: Build
-    command: docker build -t js-ipfs:$BUILDKITE_COMMIT .
+    command: docker build -t js-ipfs-api:$BUILDKITE_COMMIT .
 
   - wait
 
   - name: Test NodeJS
-    command: docker run -it js-ipfs:$BUILDKITE_COMMIT npm test
+    command: docker run -it js-ipfs-api:$BUILDKITE_COMMIT npm test
 
   - name: Test Browser
-    command: docker run -it js-ipfs:$BUILDKITE_COMMIT npm run test:browser
+    command: docker run -it js-ipfs-api:$BUILDKITE_COMMIT npm run test:browser
 
   - wait
 
