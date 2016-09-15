@@ -4,8 +4,11 @@ steps:
 
   - wait
 
-  - name: Test
-    command: docker run -it js-ipfs:$BUILDKITE_COMMIT --entrypoint=npm test
+  - name: Test NodeJS
+    command: docker run -it js-ipfs:$BUILDKITE_COMMIT npm test
+
+  - name: Test Browser
+    command: docker run -it js-ipfs:$BUILDKITE_COMMIT npm run test:browser
 
   - wait
 
