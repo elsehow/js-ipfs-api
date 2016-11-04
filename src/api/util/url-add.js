@@ -1,9 +1,10 @@
 'use strict'
 
-const Wreck = require('wreck')
+const hyperquest = require('hyperquest')
 const addToDagNodesTransform = require('./../../add-to-dagnode-transform')
 
 const promisify = require('promisify-es6')
+const once = require('once')
 
 module.exports = (send) => {
   return promisify((url, opts, callback) => {
@@ -27,17 +28,16 @@ module.exports = (send) => {
     }
 
     const sendWithTransform = send.withTransform(addToDagNodesTransform)
+    callback = once(callback)
 
-    Wreck.request('GET', url, null, (err, res) => {
-      if (err) {
-        return callback(err)
-      }
-
-      sendWithTransform({
-        path: 'add',
-        qs: opts,
-        files: res
-      }, callback)
-    })
+    hyperquest.get(url)
+      .once('error', callback)
+      .once('response', (res) => {
+        sendWithTransform({
+          path: 'add',
+          qs: opts,
+          files: res
+        }, callback)
+      })
   })
 }

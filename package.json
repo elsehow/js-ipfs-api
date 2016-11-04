@@ -5,9 +5,7 @@
   "main": "src/index.js",
   "browser": {
     "glob": false,
-    "fs": false,
-    "http": "stream-http",
-    "https": "https-browserify"
+    "fs": false
   },
   "scripts": {
     "test": "gulp test",
@@ -23,12 +21,11 @@
   },
   "dependencies": {
     "async": "^2.1.2",
-    "bl": "^1.1.2",
     "bs58": "^3.0.0",
+    "concat-stream": "^1.5.2",
     "detect-node": "^2.0.3",
     "flatmap": "0.0.3",
     "glob": "^7.1.1",
-    "https-browserify": "0.0.1",
     "ipfs-block": "^0.5.0",
     "ipld-dag-pb": "^0.8.0",
     "is-ipfs": "^0.2.1",
@@ -36,14 +33,13 @@
     "multiaddr": "^2.0.3",
     "multipart-stream": "^2.0.1",
     "ndjson": "^1.4.3",
+    "once": "^1.4.0",
     "peer-id": "^0.8.0",
     "peer-info": "^0.8.0",
     "promisify-es6": "^1.0.2",
     "qs": "^6.3.0",
-    "stream-http": "^2.4.1",
     "streamifier": "^0.1.1",
-    "tar-stream": "^1.5.2",
-    "wreck": "^10.0.0"
+    "tar-stream": "^1.5.2"
   },
   "engines": {
     "node": ">=4.0.0"
