@@ -5,7 +5,8 @@ const DAGNode = dagPB.DAGNode
 const DAGLink = dagPB.DAGLink
 const promisify = require('promisify-es6')
 const bs58 = require('bs58')
-const bl = require('bl')
+const concat = require('concat-stream')
+const once = require('once')
 const cleanMultihash = require('../clean-multihash')
 
 module.exports = (send) => {
@@ -136,6 +137,8 @@ module.exports = (send) => {
         options = {}
       }
 
+      callback = once(callback)
+
       try {
         multihash = cleanMultihash(multihash, options)
       } catch (err) {
@@ -151,7 +154,9 @@ module.exports = (send) => {
         }
 
         if (typeof result.pipe === 'function') {
-          result.pipe(bl(callback))
+          result
+            .once('error', callback)
+            .pipe(concat((data) => callback(null, data)))
         } else {
           callback(null, result)
         }

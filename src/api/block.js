@@ -1,7 +1,8 @@
 'use strict'
 
 const promisify = require('promisify-es6')
-const bl = require('bl')
+const concat = require('concat-stream')
+const once = require('once')
 const Block = require('ipfs-block')
 const multihash = require('multihashes')
 const CID = require('cids')
@@ -17,6 +18,7 @@ module.exports = (send) => {
         callback = opts
         opts = {}
       }
+      callback = once(callback)
 
       return send({
         path: 'block/get',
@@ -29,12 +31,9 @@ module.exports = (send) => {
         if (Buffer.isBuffer(res)) {
           callback(null, new Block(res))
         } else {
-          res.pipe(bl((err, data) => {
-            if (err) {
-              return callback(err)
-            }
-            callback(null, new Block(data))
-          }))
+          res
+            .once('error', callback)
+            .pipe(concat((data) => callback(null, new Block(data))))
         }
       })
     }),
